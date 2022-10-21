@@ -15,6 +15,8 @@ namespace cadastro
     {
         private MySqlConnection Conexao;
         private string data_source = "datasource=localhost;username=root;password=;database=db_agenda";
+
+        private int ?id_contato_selecionado = null;
         public Form1()
         {
             InitializeComponent();
@@ -45,18 +47,33 @@ namespace cadastro
                 Conexao.Open();                             /* Abre uma conexao com o banco de dados */
                 MySqlCommand cmd = new MySqlCommand();      /* Instanciamento da conexao */
                 cmd.Connection = Conexao;                   /* Cria conexao */
-                cmd.Parameters.AddWithValue("@nome", txtNome.Text);
-                cmd.Parameters.AddWithValue("@email", txtEmail.Text);
-                cmd.Parameters.AddWithValue("@telefone", txtTelefone.Text);
-                cmd.CommandText = "INSERT INTO contato (nome, email, telefone) VALUES (@nome, @email, @telefone)";  /* Formata os dados a serem enviados */
-                cmd.Prepare();
-                cmd.ExecuteNonQuery();          /* Envia os dados para o banco de dados */      
+                /* ou insert ou update */
+                if(id_contato_selecionado == null)
+                {
+                    cmd.Parameters.AddWithValue("@nome", txtNome.Text);
+                    cmd.Parameters.AddWithValue("@email", txtEmail.Text);
+                    cmd.Parameters.AddWithValue("@telefone", txtTelefone.Text);
+                    cmd.CommandText = "INSERT INTO contato (nome, email, telefone) VALUES (@nome, @email, @telefone)";  /* Formata os dados a serem enviados */
+                    cmd.Prepare();
+                    cmd.ExecuteNonQuery();          /* Envia os dados para o banco de dados */
 
-                MessageBox.Show("Contato inserido com sucesso!", "Sucesso!", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                carregar_contatos();
-                txtNome.Text = "";
-                txtEmail.Text = "";
-                txtTelefone.Text = "";
+                    MessageBox.Show("Contato inserido com sucesso!", "Sucesso!", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                }
+                else
+                {
+                    cmd.Parameters.AddWithValue("@nome", txtNome.Text);
+                    cmd.Parameters.AddWithValue("@email", txtEmail.Text);
+                    cmd.Parameters.AddWithValue("@telefone", txtTelefone.Text);
+                    cmd.Parameters.AddWithValue("@id", id_contato_selecionado);
+                    cmd.CommandText = "UPDATE contato SET nome=@nome, email=@email, telefone=@telefone WHERE id=@id ";  /* Formata os dados a serem enviados */
+                    cmd.Prepare();
+                    cmd.ExecuteNonQuery();          /* Envia os dados para o banco de dados */
+
+                    MessageBox.Show("Contato atualizado com sucesso!", "Sucesso!", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                }
+                id_contato_selecionado = null;
+                zerar_formulario();
+                carregar_contatos(); 
             }
             catch(MySqlException ex)
             {
@@ -170,6 +187,86 @@ namespace cadastro
         private void lst_contatos_SelectedIndexChanged(object sender, EventArgs e)
         {
 
+        }
+
+        private void lst_contatos_ItemSelectionChanged(object sender, ListViewItemSelectionChangedEventArgs e)
+        {
+            /* ListView sao as linhas,  o laco percorre os dados da linha */
+            ListView.SelectedListViewItemCollection itens_selecionados = lst_contatos.SelectedItems;
+
+            /* Percorre a colecao */
+            foreach(ListViewItem item in itens_selecionados)
+            {
+                id_contato_selecionado = Convert.ToInt32(item.SubItems[0].Text);
+                txtNome.Text = item.SubItems[1].Text;
+                txtEmail.Text = item.SubItems[2].Text;
+                txtTelefone.Text = item.SubItems[3].Text;
+                button4.Visible = true;
+            }
+        }
+
+        private void button3_Click(object sender, EventArgs e)
+        {
+            zerar_formulario();
+        }
+        private void zerar_formulario()
+        {
+            id_contato_selecionado = null;
+            txtNome.Text = "";
+            txtEmail.Text = "";
+            txtTelefone.Text = "";
+            txtNome.Focus();
+            button4.Visible = false;
+        }
+
+        private void contextMenuStrip1_Opening(object sender, CancelEventArgs e)
+        {
+
+        }
+
+        private void toolStripMenuItem1_Click(object sender, EventArgs e)
+        {
+            excluir_contato(); 
+        }
+        private void button4_Click(object sender, EventArgs e)
+        {
+            excluir_contato();
+        }
+        private void excluir_contato()
+        {
+            try
+            {
+                DialogResult conf = MessageBox.Show("Tem certeza que deseja excluir o registro?", "Ops, tem certeza", MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
+
+                if (conf == DialogResult.Yes)
+                {
+                    Conexao = new MySqlConnection(data_source);
+                    MySqlCommand cmd = new MySqlCommand();
+                    Conexao.Open();
+                    cmd.Connection = Conexao;
+                    cmd.CommandText = "DELETE FROM contato WHERE id=@id";
+
+                    cmd.Parameters.AddWithValue("@id", id_contato_selecionado);
+                    cmd.Prepare();
+                    cmd.ExecuteNonQuery();
+
+                    MessageBox.Show("Contato Excluído com sucesso!", "Sucesso!", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    carregar_contatos();
+                    zerar_formulario();
+                }
+            }
+            catch (MySqlException ex)
+            {
+                MessageBox.Show("Erro" + ex.Number + " ocorreu " + ex.Message, "Erro ", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(" ocorreu " + ex.Message, "Erro ", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+            finally
+            {
+                Conexao.Close();
+            }
         }
     }
 }

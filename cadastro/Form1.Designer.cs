@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             this.button1 = new System.Windows.Forms.Button();
             this.label1 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
@@ -36,16 +37,21 @@
             this.txtTelefone = new System.Windows.Forms.TextBox();
             this.txtEmail = new System.Windows.Forms.TextBox();
             this.lst_contatos = new System.Windows.Forms.ListView();
+            this.contextMenuStrip1 = new System.Windows.Forms.ContextMenuStrip(this.components);
+            this.toolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
             this.label4 = new System.Windows.Forms.Label();
             this.txtBuscar = new System.Windows.Forms.TextBox();
             this.button2 = new System.Windows.Forms.Button();
+            this.button3 = new System.Windows.Forms.Button();
+            this.button4 = new System.Windows.Forms.Button();
+            this.contextMenuStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
             // button1
             // 
-            this.button1.Location = new System.Drawing.Point(148, 169);
+            this.button1.Location = new System.Drawing.Point(260, 169);
             this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(75, 23);
+            this.button1.Size = new System.Drawing.Size(101, 23);
             this.button1.TabIndex = 0;
             this.button1.Text = "Salvar";
             this.button1.UseVisualStyleBackColor = true;
@@ -72,7 +78,7 @@
             // label3
             // 
             this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(12, 127);
+            this.label3.Location = new System.Drawing.Point(9, 127);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(35, 13);
             this.label3.TabIndex = 3;
@@ -80,9 +86,9 @@
             // 
             // txtNome
             // 
-            this.txtNome.Location = new System.Drawing.Point(12, 44);
+            this.txtNome.Location = new System.Drawing.Point(12, 50);
             this.txtNome.Name = "txtNome";
-            this.txtNome.Size = new System.Drawing.Size(211, 20);
+            this.txtNome.Size = new System.Drawing.Size(349, 20);
             this.txtNome.TabIndex = 4;
             this.txtNome.TextChanged += new System.EventHandler(this.txtNome_TextChanged);
             // 
@@ -90,7 +96,7 @@
             // 
             this.txtTelefone.Location = new System.Drawing.Point(12, 89);
             this.txtTelefone.Name = "txtTelefone";
-            this.txtTelefone.Size = new System.Drawing.Size(211, 20);
+            this.txtTelefone.Size = new System.Drawing.Size(349, 20);
             this.txtTelefone.TabIndex = 5;
             this.txtTelefone.TextChanged += new System.EventHandler(this.txtTelefone_TextChanged);
             // 
@@ -98,23 +104,41 @@
             // 
             this.txtEmail.Location = new System.Drawing.Point(12, 143);
             this.txtEmail.Name = "txtEmail";
-            this.txtEmail.Size = new System.Drawing.Size(211, 20);
+            this.txtEmail.Size = new System.Drawing.Size(349, 20);
             this.txtEmail.TabIndex = 6;
             // 
             // lst_contatos
             // 
+            this.lst_contatos.ContextMenuStrip = this.contextMenuStrip1;
             this.lst_contatos.HideSelection = false;
-            this.lst_contatos.Location = new System.Drawing.Point(242, 73);
+            this.lst_contatos.Location = new System.Drawing.Point(381, 73);
+            this.lst_contatos.MultiSelect = false;
             this.lst_contatos.Name = "lst_contatos";
-            this.lst_contatos.Size = new System.Drawing.Size(476, 319);
+            this.lst_contatos.Size = new System.Drawing.Size(522, 356);
             this.lst_contatos.TabIndex = 7;
             this.lst_contatos.UseCompatibleStateImageBehavior = false;
+            this.lst_contatos.ItemSelectionChanged += new System.Windows.Forms.ListViewItemSelectionChangedEventHandler(this.lst_contatos_ItemSelectionChanged);
             this.lst_contatos.SelectedIndexChanged += new System.EventHandler(this.lst_contatos_SelectedIndexChanged);
+            // 
+            // contextMenuStrip1
+            // 
+            this.contextMenuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.toolStripMenuItem1});
+            this.contextMenuStrip1.Name = "contextMenuStrip1";
+            this.contextMenuStrip1.Size = new System.Drawing.Size(110, 26);
+            this.contextMenuStrip1.Opening += new System.ComponentModel.CancelEventHandler(this.contextMenuStrip1_Opening);
+            // 
+            // toolStripMenuItem1
+            // 
+            this.toolStripMenuItem1.Name = "toolStripMenuItem1";
+            this.toolStripMenuItem1.Size = new System.Drawing.Size(109, 22);
+            this.toolStripMenuItem1.Text = "Excluir";
+            this.toolStripMenuItem1.Click += new System.EventHandler(this.toolStripMenuItem1_Click);
             // 
             // label4
             // 
             this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(239, 28);
+            this.label4.Location = new System.Drawing.Point(378, 28);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(76, 13);
             this.label4.TabIndex = 8;
@@ -123,26 +147,49 @@
             // 
             // txtBuscar
             // 
-            this.txtBuscar.Location = new System.Drawing.Point(242, 44);
+            this.txtBuscar.Location = new System.Drawing.Point(381, 46);
             this.txtBuscar.Name = "txtBuscar";
             this.txtBuscar.Size = new System.Drawing.Size(217, 20);
             this.txtBuscar.TabIndex = 9;
             // 
             // button2
             // 
-            this.button2.Location = new System.Drawing.Point(482, 41);
+            this.button2.Location = new System.Drawing.Point(614, 46);
             this.button2.Name = "button2";
-            this.button2.Size = new System.Drawing.Size(75, 23);
+            this.button2.Size = new System.Drawing.Size(91, 23);
             this.button2.TabIndex = 10;
             this.button2.Text = "Buscar";
             this.button2.UseVisualStyleBackColor = true;
             this.button2.Click += new System.EventHandler(this.button2_Click);
             // 
+            // button3
+            // 
+            this.button3.Location = new System.Drawing.Point(12, 169);
+            this.button3.Name = "button3";
+            this.button3.Size = new System.Drawing.Size(104, 23);
+            this.button3.TabIndex = 11;
+            this.button3.Text = "Novo";
+            this.button3.UseVisualStyleBackColor = true;
+            this.button3.Click += new System.EventHandler(this.button3_Click);
+            // 
+            // button4
+            // 
+            this.button4.Location = new System.Drawing.Point(138, 169);
+            this.button4.Name = "button4";
+            this.button4.Size = new System.Drawing.Size(104, 23);
+            this.button4.TabIndex = 12;
+            this.button4.Text = "Excluir";
+            this.button4.UseVisualStyleBackColor = true;
+            this.button4.Visible = false;
+            this.button4.Click += new System.EventHandler(this.button4_Click);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(730, 549);
+            this.ClientSize = new System.Drawing.Size(917, 441);
+            this.Controls.Add(this.button4);
+            this.Controls.Add(this.button3);
             this.Controls.Add(this.button2);
             this.Controls.Add(this.txtBuscar);
             this.Controls.Add(this.label4);
@@ -157,6 +204,7 @@
             this.Name = "Form1";
             this.Text = "Sistema de gerenciamento escolar";
             this.Load += new System.EventHandler(this.Form1_Load);
+            this.contextMenuStrip1.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -175,6 +223,10 @@
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.TextBox txtBuscar;
         private System.Windows.Forms.Button button2;
+        private System.Windows.Forms.Button button3;
+        private System.Windows.Forms.ContextMenuStrip contextMenuStrip1;
+        private System.Windows.Forms.ToolStripMenuItem toolStripMenuItem1;
+        private System.Windows.Forms.Button button4;
     }
 }
 
