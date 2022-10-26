@@ -4,10 +4,13 @@ using System.ComponentModel;
 using System.Data;
 using System.Drawing;
 using System.Linq;
+using System.Runtime.CompilerServices;
+using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using MySql.Data.MySqlClient;       /* Biblioteca pronta pacote nuget */
+using MySql.Data.MySqlClient;       /* Biblioteca pronta pacote banco de dados nuget */
+using static System.Windows.Forms.VisualStyles.VisualStyleElement.Window;
 
 namespace cadastro
 {
@@ -15,11 +18,28 @@ namespace cadastro
     {
         private MySqlConnection Conexao;
         private string data_source = "datasource=localhost;username=root;password=;database=db_agenda";
-
         private int ?id_contato_selecionado = null;
+        Login formCli;
         public Form1()
         {
+            bool _found = false;
+            foreach(Form _openForm in Application.OpenForms)
+            {
+                if(_openForm is Form1)
+                {
+                    _openForm.Focus();
+                    _found = true;
+                }
+            }
+            if(!_found)
+            {
+                formCli = new Login();
+                formCli.ShowDialog();
+                formCli.BringToFront();
+                formCli.TopMost = true;
+            }
             InitializeComponent();
+
             lst_contatos.View = View.Details;
             lst_contatos.LabelEdit = true;
             lst_contatos.AllowColumnReorder = true;
@@ -30,8 +50,12 @@ namespace cadastro
             lst_contatos.Columns.Add("Nome", 150, HorizontalAlignment.Left);
             lst_contatos.Columns.Add("E-mail", 150, HorizontalAlignment.Left);
             lst_contatos.Columns.Add("Telefone", 150, HorizontalAlignment.Left);
-
+            
             carregar_contatos();
+
+            //this.Visible = true;
+            //var janela2 = new Login();
+            //janela2.Show();
         }
 
         private void Form1_Load(object sender, EventArgs e)
@@ -87,9 +111,7 @@ namespace cadastro
             {
                 Conexao.Close();
             }
-
         }
-
         private void txtNome_TextChanged(object sender, EventArgs e)
         {
             
@@ -168,8 +190,8 @@ namespace cadastro
                     };
                     lst_contatos.Items.Add(new ListViewItem(row));
                 }
-
             }
+            
             catch (MySqlException ex)
             {
                 MessageBox.Show("Erro " + ex.Number + " ocorreu: " + ex.Message, "Erro", MessageBoxButtons.OK, MessageBoxIcon.Error);
@@ -183,7 +205,6 @@ namespace cadastro
                 Conexao.Close();
             }
         }
-
         private void lst_contatos_SelectedIndexChanged(object sender, EventArgs e)
         {
 
@@ -204,7 +225,6 @@ namespace cadastro
                 button4.Visible = true;
             }
         }
-
         private void button3_Click(object sender, EventArgs e)
         {
             zerar_formulario();
@@ -218,12 +238,10 @@ namespace cadastro
             txtNome.Focus();
             button4.Visible = false;
         }
-
         private void contextMenuStrip1_Opening(object sender, CancelEventArgs e)
         {
 
         }
-
         private void toolStripMenuItem1_Click(object sender, EventArgs e)
         {
             excluir_contato(); 
