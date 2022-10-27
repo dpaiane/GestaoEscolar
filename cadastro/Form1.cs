@@ -52,10 +52,6 @@ namespace cadastro
             lst_contatos.Columns.Add("Telefone", 150, HorizontalAlignment.Left);
             
             carregar_contatos();
-
-            //this.Visible = true;
-            //var janela2 = new Login();
-            //janela2.Show();
         }
 
         private void Form1_Load(object sender, EventArgs e)
@@ -255,7 +251,6 @@ namespace cadastro
             try
             {
                 DialogResult conf = MessageBox.Show("Tem certeza que deseja excluir o registro?", "Ops, tem certeza", MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
-
                 if (conf == DialogResult.Yes)
                 {
                     Conexao = new MySqlConnection(data_source);
@@ -285,6 +280,14 @@ namespace cadastro
             {
                 Conexao.Close();
             }
+        }
+
+        private void button5_Click(object sender, EventArgs e)
+        {
+            string target = "https://www.senairs.org.br/";
+            System.Diagnostics.Process.Start(target);
+            //var janela2 = new Login();
+            //janela2.Show();
         }
     }
 }
